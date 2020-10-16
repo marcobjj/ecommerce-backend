@@ -22,11 +22,11 @@ router.get('/:id', (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
 
-  Tag.findAll({
+  Tag.findOne({
 
     include:[{model:Product, as: "tagged_products"}]
   ,where:{id:req.params.id}})
-  .then(updatedPostData => res.json(updatedPostData))
+  .then(oneTag => res.json(oneTag))
       .catch(err => {
         console.log(err);
         res.status(400).json(err);
@@ -37,14 +37,71 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
+  Tag.create(req.body)
+  .then(result =>{
+
+    Tag.findAll()
+    .then(allTags => res.status(200).json(allTags))
+    .catch(err => {
+
+      console.log(err);
+      res.status(400).json(err);
+
+    })
+  })
+  .catch(err => {
+
+    console.log(err);
+    res.status(400).json(err);
+    
+  })
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update(req.body,{where:{id:req.params.id}})
+  .then(result =>{
+ // outputs the updated tag to json
+    Tag.findOne({
+
+      include:[{model:Product, as: "tagged_products"}]
+    ,where:{id:req.params.id}})
+    .then(oneTag => res.json(oneTag))
+        .catch(err => {
+          console.log(err);
+          res.status(400).json(err);
+        });
+
+
+  })
+  .catch(err => {
+
+    console.log(err);
+    res.status(400).json(err);
+    
+  })
 });
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  Tag.destroy({where:{id:req.params.id}})
+  .then(result =>{
+
+    Tag.findAll()
+    .then(allTags => res.status(200).json(allTags))
+    .catch(err => {
+
+      console.log(err);
+      res.status(400).json(err);
+
+    })
+  })
+  .catch(err => {
+
+    console.log(err);
+    res.status(400).json(err);
+    
+  })
 });
 
 module.exports = router;

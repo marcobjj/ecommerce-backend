@@ -37,7 +37,7 @@ router.get('/:id', (req, res) => {
     where: { id: req.params.id }
 
   })
-    .then(updatedPostData => res.json(updatedPostData))
+    .then(oneProduct => res.json(oneProduct))
     .catch(err => {
       console.log(err);
       res.status(400).json(err);
@@ -58,7 +58,7 @@ router.post('/', (req, res) => {
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+      if (req.body.tagIds) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
@@ -80,17 +80,13 @@ router.post('/', (req, res) => {
 // update product
 router.put('/:id', (req, res) => {
   // update product data
-  const values = {};
 
-  if(req.body.product_name) values.product_name = req.body.product_name;
-  if(req.body.price) values.price = req.body.price;
-  if(req.body.stock) values.stock = req.body.stock;
-  if(req.body.category_id) values.category_id = req.body.category_id;
 
-  if(Object.keys(values).length > 0)
-  {
+  //make sure there are actual pertinent fields
 
-  Product.update(values,
+  if (!req.body.tagIds || !req.body.tagIds.length) {
+
+  Product.update(req.body,
     
     {  where: { id: req.params.id }}
     
@@ -113,12 +109,12 @@ router.put('/:id', (req, res) => {
   });
 
  
-
   }
+  
 
   
-  if (!req.body.tagIds) return
-  if (!req.body.tagIds.length) return
+  // if (!req.body.tagIds) return
+  // if (!req.body.tagIds.length) return
 
   
 
@@ -127,7 +123,7 @@ router.put('/:id', (req, res) => {
       // get list of current tag_ids
 
       const productTagIds = productTags.map(({ tag_id }) => tag_id);
-
+   
     
       // create filtered list of new tag_ids
       const newProductTags = req.body.tagIds
@@ -139,7 +135,7 @@ router.put('/:id', (req, res) => {
           };
         });
        
-
+     
       // figure out which ones to remove
       const productTagsToRemove = productTags
         .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
@@ -165,6 +161,20 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+
+  Product.destroy({ where: { id: req.params.id } })
+  .then(result => { 
+    Product.findAll()  
+    .then(allProducts => {
+    res.json(allProducts);
+  })
+
+  })
+  .catch((err) => {
+   
+    res.status(400).json(err);
+  });
+
 });
 
 module.exports = router;
