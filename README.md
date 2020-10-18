@@ -39,10 +39,10 @@ Watch the walkthrough video below:
 On the application root folder, enter the mysql shell and create the database using source db/schema.sql;. You can seed the tables with sample categories, tags and products. On the root folder, use the command npm run seed. Node.js and node package manager for this installation.  
  ``` mysql -u root  -p ``` 
  
- enter your password, then on the mysql shell use this command:
+ enter your password, then on the mysql shell use this command:  
  ```source db/schema.sql;```  
  
- exit the mysql shel and type this command, then press enter:
+ exit the mysql shel and type this command, then press enter:  
  ```npm run seed ```   
 
 ## Questions
