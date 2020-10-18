@@ -13,10 +13,6 @@
  
 * [Usage](#usage)  
  
-* [Contributing](#contributing)  
- 
-* [Tests](#tests)  
- 
 * [Installation](#installation)  
  
 * [Questions](#questions)  
@@ -36,21 +32,18 @@ Backend for e-commerce application  using node,mysql,express and sequelizer
 Watch the walkthrough video below:  
 [Walkthrough video](https://www.youtube.com/watch?v=Rk_cMgA1pUk&feature=youtu.be&ab_channel=MarcoEvangelista)  
 
-## Contributing
-
-
-blah  
-
-## Tests
-
-
-blah  
 
 ## Installation
 
 
 On the application root folder, enter the mysql shell and create the database using source db/schema.sql;. You can seed the tables with sample categories, tags and products. On the root folder, use the command npm run seed. Node.js and node package manager for this installation.  
- ``` mysql -u root  -p  source db/schema.sql   npm run seed ```   
+ ``` mysql -u root  -p ``` 
+ 
+ enter your password, then on the mysql shell use this command:
+ ```source db/schema.sql;```  
+ 
+ exit the mysql shel and type this command, then press enter:
+ ```npm run seed ```   
 
 ## Questions
 
